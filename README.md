@@ -18,6 +18,8 @@ Technologies Used
 HTML, CSS, JavaScript
 
 How to Run
+
+
 Download or clone the project
 Open index.html in a browser
 
