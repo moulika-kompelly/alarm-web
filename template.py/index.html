@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alarm Web App</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h1>⏰ Alarm Clock</h1>
+
+<input type="time" id="alarmTime">
+<button onclick="setAlarm()">Add Alarm</button>
+
+<ul id="list"></ul>
+
+<audio id="sound" src="/static/alarm.mp3"></audio>
+
+<script>
+let alarms = [];
+function setAlarm() {
+    let time = document.getElementById("alarmTime").value;
+
+    fetch("/add_alarm", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({time: time})
+    });
+
+    alarms.push(time);
+    render();
+}
+
+function render() {
+    let list = document.getElementById("list");
+    list.innerHTML = "";
+    alarms.forEach(a => {
+        let li = document.createElement("li");
+        li.innerText = a;
+        list.appendChild(li);
+    });
+}
+
+setInterval(() => {
+    let now = new Date().toTimeString().slice(0,5);
+
+    alarms.forEach(a => {
+        if (a === now) {
+            document.getElementById("sound").play();
+            alert("⏰ Alarm!");
+        }
+    });
+}, 1000);
+</script>
+
+</body>
+</html>
